@@ -32,26 +32,14 @@ void find_minmax(vector<double> numbers, double& min, double& max)
     }
 }
 
-int main()
+vector<size_t> make_histogram( vector<double> numbers, size_t bin_count, size_t number_count, size_t& max_in_bin)
 {
-    const size_t SCREEN_WIDTH = 80;
-    const size_t MAX_HIGH = SCREEN_WIDTH - 3 - 1;
-    size_t number_count, bin_count, max_in_bin=0;
-    int i;
-    cerr << "Enter number count: ";
-    cin >> number_count;
-    const auto numbers = input_numbers(number_count);
-
-    cerr << "Enter bin count: ";
-    cin >> bin_count;
     vector <size_t> bins (bin_count);
 
     double min, max;
-
-    find_minmax(vector<double> numbers, min, max);
+    find_minmax(numbers, min, max);
 
     double bin_size = (max - min) / bin_count;
-
 
     for (size_t i = 0; i < number_count; i++)
     {
@@ -80,7 +68,11 @@ int main()
             max_in_bin=bins[bin_count - 1];
         }
     }
+    return bins;
+}
 
+void show_histogram_text( vector <size_t> bins, const size_t max_in_bin, const size_t MAX_HIGH)
+{
     if (max_in_bin > MAX_HIGH)
     {
         for(size_t size: bins)
@@ -126,6 +118,24 @@ int main()
             cout << endl;
         }
     }
+}
+
+int main()
+{
+    const size_t SCREEN_WIDTH = 80;
+    const size_t MAX_HIGH = SCREEN_WIDTH - 3 - 1;
+    size_t number_count, bin_count, max_in_bin=0;
+    int i;
+    cerr << "Enter number count: ";
+    cin >> number_count;
+    const auto numbers = input_numbers(number_count);
+
+    cerr << "Enter bin count: ";
+    cin >> bin_count;
+
+    const auto bins = make_histogram(numbers, bin_count, number_count, max_in_bin);
+
+    show_histogram_text(bins, max_in_bin, MAX_HIGH);
 
     return 0;
 }
