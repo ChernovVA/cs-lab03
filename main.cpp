@@ -3,6 +3,33 @@
 
 using namespace std;
 
+void svg_begin(double width, double height)
+{
+    cout << "<?xml version='1.0' encoding='UTF-8'?>\n";
+    cout << "<svg ";
+    cout << "width='" << width << "' ";
+    cout << "height='" << height << "' ";
+    cout << "viewBox='0 0 " << width << " " << height << "' ";
+    cout << "xmlns='http://www.w3.org/2000/svg'>\n";
+}
+
+void svg_text(double left, double baseline, string text)
+{
+    cout << "<text x=' " << left << " ' y=' " << baseline << " '> " << text << " </text>";
+}
+
+void svg_end()
+{
+    cout << "</svg>\n";
+}
+
+void show_histogram_svg(const vector<size_t>& bins)
+{
+    svg_begin(400, 300);
+    svg_text(20, 20, to_string(bins[0]));
+    svg_end();
+}
+
 vector<double> input_numbers(size_t count)
 {
     vector<double> input(count);
@@ -135,7 +162,9 @@ int main()
 
     const auto bins = make_histogram(numbers, bin_count, number_count, max_in_bin);
 
-    show_histogram_text(bins, max_in_bin, MAX_HIGH);
+    show_histogram_svg(bins);
+
+    //show_histogram_text(bins, max_in_bin, MAX_HIGH);
 
     return 0;
 }
