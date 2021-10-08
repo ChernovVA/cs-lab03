@@ -119,7 +119,7 @@ int main()
 
     const auto bins = make_histogram(numbers, bin_count, number_count, max_in_bin);
 
-    show_histogram_svg(bins);
+    show_histogram_svg(bins, number_count);
 
     //show_histogram_text(bins, max_in_bin, MAX_HIGH);
 

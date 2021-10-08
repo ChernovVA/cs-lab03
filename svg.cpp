@@ -1,5 +1,20 @@
 #include "histogram.h"
 
+int input_width(size_t number_count, double BLOCK_WIDTH,  istream& in)
+{
+    int image_width;
+    cerr << "Enter SCREEN_WIDTH:";
+    in >> image_width;
+    while(image_width < 70 || image_width > 800 || image_width < 1/3*(number_count*BLOCK_WIDTH))
+    {
+        cerr << "invalid input(<70/>800/<0,33*numbers_count*BLOCK_WIDTH), please enter again";
+        cerr << "Enter SCREEN_WIDTH:";
+        in >> image_width;
+    }
+    return image_width;
+}
+
+
 void svg_begin(double width, double height)
 {
     cout << "<?xml version='1.0' encoding='UTF-8'?>\n";
@@ -25,17 +40,18 @@ void svg_end()
     cout << "</svg>\n";
 }
 
-void show_histogram_svg(const vector<size_t>& bins)
+void show_histogram_svg(const vector<size_t>& bins, size_t number_count)
 {
     const size_t SCREEN_WIDTH = 80;
     const size_t MAX_ASTERISK = SCREEN_WIDTH - 3 - 1;
-    const auto IMAGE_WIDTH = 400;
+    //const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
     const auto TEXT_LEFT = 20;
     const auto TEXT_BASELINE = 20;
     const auto TEXT_WIDTH = 50;
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
+    auto IMAGE_WIDTH = input_width(number_count, BLOCK_WIDTH, cin);
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
     double top = 0;
     size_t max_count = bins[0];
