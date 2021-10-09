@@ -1,4 +1,7 @@
 #include "histogram.h"
+#include <string>
+#include <sstream>
+#include <windows.h>
 
 int input_width(size_t number_count, double BLOCK_WIDTH,  istream& in)
 {
@@ -89,4 +92,27 @@ void show_histogram_svg(const vector<size_t>& bins, size_t number_count)
         }
     }
     svg_end();
+}
+
+string make_info_text()
+{
+    stringstream buffer;
+    DWORD info = GetVersion();
+    DWORD mask = 0x0000ffff;
+    DWORD mask_2 = 0x000000ff;
+    DWORD platform = info >> 16;
+    DWORD version = info & mask;
+    if ((info & 0x80000000) == 0)
+    {
+        DWORD version_major = version & mask_2;
+        DWORD version_minor = version >> 8;
+        DWORD build = platform;
+        buffer << "Windows v" << version_major << "." << version_minor << " (build " << build << ")"<<" \n ";
+    }
+
+    DWORD size = MAX_COMPUTERNAME_LENGTH+1;
+    char computer_name[size];
+    GetComputerNameA(computer_name, &size);
+    buffer << "Computer name: " << computer_name;
+    return buffer.str();
 }
